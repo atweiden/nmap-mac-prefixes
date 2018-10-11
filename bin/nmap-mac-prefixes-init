@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+# ----------------------------------------------------------------------------
+# nmap-mac-prefixes-init: copy upstream nmap-mac-prefixes into resources
+# ----------------------------------------------------------------------------
+
+_usage() {
+read -r -d '' _usage_string <<EOF
+Usage:
+  nmap-mac-prefixes-init [-h|--help] <path>
+
+Options:
+  -h, --help  Show this help text
+
+Positionals:
+  <path>      Path to upstream nmap-mac-prefixes
+    macOS       brew ls --verbose nmap | grep nmap-mac-prefixes
+EOF
+echo "$_usage_string"
+}
+
+_POSITIONAL=()
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -h|--help)
+      _usage
+      exit 0
+      ;;
+    *)
+      _POSITIONAL+=("$1")
+      shift
+      ;;
+  esac
+done
+
+# restore positional params
+set -- "${_POSITIONAL[@]}"
+
+main() {
+  [[ -r "$1" && "$(basename "$1")" == 'nmap-mac-prefixes' ]] \
+    || (echo "Sorry, could not read nmap-mac-prefixes file"; exit 1)
+  cp "$1" resources/
+}
+
+main "$1"
+
+# vim: set filetype=sh foldmethod=marker foldlevel=0 nowrap:

@@ -1,0 +1,28 @@
+#!/usr/bin/env perl6
+use v6;
+use Nmap::MAC::Prefixes;
+
+multi sub output($in, Bool:D :json($)! where .so --> Nil)
+{
+    Rakudo::Internals::JSON.to-json($in).say;
+}
+
+multi sub output($in, Bool :json($) --> Nil)
+{
+    $in.perl.say;
+}
+
+multi sub MAIN('ls', Str:D $vendor, Bool :$json --> Nil)
+{
+    %Nmap::MAC::Prefixes::NMAP-MAC-PREFIXES
+    .grep({ .keys ~~ /:i $vendor/ })
+    ==> output(:$json);
+}
+
+multi sub MAIN('ls', Bool :$json --> Nil)
+{
+    %Nmap::MAC::Prefixes::NMAP-MAC-PREFIXES
+    ==> output(:$json);
+}
+
+# vim: set filetype=perl6 foldmethod=marker foldlevel=0 nowrap:

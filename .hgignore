@@ -1,0 +1,6 @@
+syntax: glob
+
+resources/*
+!resources/.gitkeep
+.precomp
+.subgit
