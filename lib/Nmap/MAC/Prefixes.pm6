@@ -7,22 +7,23 @@ constant %NMAP-MAC-PREFIXES =
     .grep(none /^'#'/)
     .map({
         my Str:D @w = .split(/\s+/);
-        my Str:D $key = @w.first;
-        my Str:D $value = @w[1..*].join(' ');
-        $key => $value
+        my Str:D $vendor = @w[1..*].join(' ');
+        my Str:D $oui = @w.first;
+        $vendor => $oui
     })
     .classify({
-        .values.first
+        # classify by vendor
+        .keys.first
     })
     .map({
-        .kv.map(-> $k, $v {
-            my @v = $v.map({ .keys }).flat;
-            $k => @v
+        .kv
+        .map(-> Str:D $vendor, @vendor-then-oui {
+            # isolate oui
+            my Str:D @oui = @vendor-then-oui.map({ .values.tail });
+            $vendor => @oui;
         })
-        .flat
     })
     .flat
-    .sort
     .hash;
 
 # vim: set filetype=perl6 foldmethod=marker foldlevel=0 nowrap:
