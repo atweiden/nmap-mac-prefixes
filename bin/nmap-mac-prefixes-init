@@ -38,8 +38,10 @@ done
 set -- "${_POSITIONAL[@]}"
 
 main() {
-  [[ -r "$1" && "$(basename "$1")" == 'nmap-mac-prefixes' ]] \
-    || (echo "Sorry, could not read nmap-mac-prefixes file"; exit 1)
+  if ! [[ -r "$1" && "$(basename "$1")" == 'nmap-mac-prefixes' ]]; then
+    echo "Sorry, could not read nmap-mac-prefixes file"
+    exit 1
+  fi
   cp "$1" resources/
 }
 
