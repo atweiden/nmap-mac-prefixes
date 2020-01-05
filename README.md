@@ -14,16 +14,15 @@ bin/nmap-mac-prefixes-init /path/to/nmap-mac-prefixes
 Explore:
 
 ```sh
-export PERL6LIB='lib'
 # output json
 bin/nmap-mac-prefixes --json ls apple
-# output perl
+# output raku
 bin/nmap-mac-prefixes ls
 ```
 
 ## Dependencies
 
-- Rakudo Perl 6
+- Raku
 - Bash
 - Nmap
 
